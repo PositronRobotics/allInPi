@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#include <pthread.h>
+
 #define I2C_ADDR 0x08
 #define LED_ON  0xEF
 #define LED_OFF 0xFF
@@ -22,14 +24,28 @@ int getch(void)
 	return ch;
 }
 
+void *worker(void *data)
+{
+	printf("bala:7may:In thread\n");
+
+	for (int i = 0; i < 120; i++)
+	{
+		usleep(50000);
+		printf("Hi from threa\n");
+	}
+	
+	printf("Thread done!\n");
+	return NULL;
+}
 
 int main (void)
 {
 	int in=0;
 	int value=65;
 	int fd;
+	pthread_t th1;
 
-	printf("bala:7may:101.0\n");
+	printf("bala:7may:101.1\n");
 
 	fd = open("/dev/i2c-1", O_RDWR);
 
@@ -41,6 +57,10 @@ int main (void)
 		printf("ioctl error: %s\n", strerror(errno));
 		return 1;
 	}   
+
+	printf("bala:7may:101.2\n");
+
+	pthread_create(&th1, NULL, worker, "X");
 
 	while(1)
 	{   
@@ -56,7 +76,7 @@ int main (void)
 			value=65;
 		}
 
-		usleep(1000000); 
+		usleep(100); 
 	}
 
 	return 0;
