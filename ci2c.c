@@ -29,7 +29,7 @@ int main (void)
 	int value=65;
 	int fd;
 
-	printf("bala:23apr:101.0\n");
+	printf("bala:7may:101.0\n");
 
 	fd = open("/dev/i2c-1", O_RDWR);
 
