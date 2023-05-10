@@ -11,6 +11,8 @@
 #define LED_ON  0xEF
 #define LED_OFF 0xFF
 
+int fd;
+
 int getch(void)
 {
 	struct termios oldattr, newattr;
@@ -26,12 +28,25 @@ int getch(void)
 
 void *worker(void *data)
 {
+	int in=65;
 	printf("bala:7may:In thread\n");
 
-	for (int i = 0; i < 120; i++)
+	/*for (int i = 0; i < 120; i++)
 	{
 		usleep(50000);
 		printf("Hi from threa\n");
+	}*/
+
+	while(1)
+	{
+		//write( fd , 'q', 1 );
+		
+		if( write( fd , &in, 1 ) != 1) {
+			printf("Error writing file: %s\n", strerror(errno));
+		}
+		
+		usleep(50000);
+		printf("Hi from q\n");
 	}
 	
 	printf("Thread done!\n");
@@ -42,7 +57,6 @@ int main (void)
 {
 	int in=0;
 	int value=65;
-	int fd;
 	pthread_t th1;
 
 	printf("bala:7may:101.1\n");
